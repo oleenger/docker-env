@@ -1,0 +1,7 @@
+version: "1"
+services:
+  docker-env:
+    build: https://github.com/oleenger/docker-env.git
+    image: docker-env
+    ports:
+      - 8081
