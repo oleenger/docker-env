@@ -25,6 +25,7 @@ RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 ENV LANG en_US.UTF-8
 RUN ln ~/.config/tmux/tmux.conf ~/.tmux.conf
 RUN cp ~/.config/bash/bashrc ~/.bashrc
+RUN cp ~/.config/git/gitconfig ~/.gitconfig
 
 CMD ["/bin/bash"]
 WORKDIR /home/oleenger
