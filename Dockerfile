@@ -3,7 +3,7 @@ FROM ubuntu:devel
 RUN apt-get update && \
     apt-get install -y sudo apt-utils curl git-core gnupg tmux zsh wget gcc g++ \
     locales fonts-powerline gh vim pip python3-dev libc-dev libffi-dev graphviz \
-    graphviz-dev tmuxinator htop
+    graphviz-dev tmuxinator htop python3-venv
 
 RUN locale-gen en_US.UTF-8
 
