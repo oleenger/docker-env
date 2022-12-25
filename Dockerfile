@@ -18,6 +18,7 @@ RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim  ~/.local/shar
 ADD "https://api.github.com/repos/oleenger/config/commits?per_page=1" latest_commit
 RUN git clone https://github.com/oleenger/config.git ~/.config
 
+RUN pip install black
 
 RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
