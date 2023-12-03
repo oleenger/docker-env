@@ -9,12 +9,12 @@ RUN locale-gen en_US.UTF-8
 
 RUN useradd -m oleenger && echo "oleenger:oleenger" | chpasswd && adduser oleenger sudo
 
-RUN wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz
-RUN tar xzvf nvim-linux64.tar.gz
-RUN cp ./nvim-linux64/bin/nvim /usr/bin/nvim
-RUN chmod a+x /usr/bin/nvim
+RUN wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz -O /tmp/nvim-linux64.tar.gz
+RUN tar xzvf /tmp/nvim-linux64.tar.gz -C /opt
+RUN ln -s /opt/nvim-linux64/bin/nvim /usr/bin/nvim
+#RUN chmod a+x /usr/bin/nvim
 
-RUN pip install black
+#RUN pip -y install black
 USER oleenger
 RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim  ~/.local/share/nvim/site/pack/packer/start/packer.nvim
 
