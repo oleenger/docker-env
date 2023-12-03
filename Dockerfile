@@ -3,7 +3,7 @@ FROM ubuntu:devel
 RUN apt-get update && \
     apt-get install -y sudo apt-utils curl git-core gnupg tmux zsh wget gcc g++ \
     locales fonts-powerline gh vim pip python3-dev libc-dev libffi-dev graphviz \
-    graphviz-dev tmuxinator htop libfuse2 python3-pip
+    graphviz-dev tmuxinator htop python3-pip
 
 RUN locale-gen en_US.UTF-8
 
@@ -14,7 +14,7 @@ RUN tar xzvf nvim-linux64.tar.gz
 RUN cp ./nvim-linux64/bin/nvim /usr/bin/nvim
 RUN chmod a+x /usr/bin/nvim
 
-#RUN pip install black
+RUN pip install black
 USER oleenger
 RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim  ~/.local/share/nvim/site/pack/packer/start/packer.nvim
 
