@@ -28,21 +28,20 @@ ENV HADOOP_HOME=${HADOOP_HOME:-"/opt/hadoop"}
 RUN mkdir -p ${HADOOP_HOME} && mkdir -p ${SPARK_HOME}
 WORKDIR ${SPARK_HOME}
 
-RUN curl https://dlcdn.apache.org/spark/spark-3.3.3/spark-3.3.3-bin-hadoop3.tgz -o spark-3.3.3-bin-hadoop3.tgz \
- && tar xvzf spark-3.3.3-bin-hadoop3.tgz --directory /opt/spark --strip-components 1 \
- && rm -rf spark-3.3.3-bin-hadoop3.tgz
+RUN curl https://dlcdn.apache.org/spark/spark-3.3.3/spark-3.3.3-bin-hadoop3.tgz -o spark-3.3.3-bin-hadoop3.tgz
+RUN tar xvzf spark-3.3.3-bin-hadoop3.tgz --directory /opt/spark --strip-components 1
+RUN rm -rf spark-3.3.3-bin-hadoop3.tgz
 
 RUN apt-get install -y rsync openjdk-11-jdk
 
 ENV PATH="/opt/spark/sbin:/opt/spark/bin:${PATH}"
 ENV SPARK_HOME="/opt/spark"
-#ENV SPARK_MASTER="spark://spark-master:7077"
-#ENV SPARK_MASTER_HOST spark-master
+ENV SPARK_MASTER="spark://spark-master:7077"
+ENV SPARK_MASTER_HOST spark-master
 ENV SPARK_MASTER_PORT 7077
 ENV PYSPARK_PYTHON python3
 
-COPY conf/spark-defaults.conf "$SPARK_HOME/conf"
-
+#COPY ./conf/spark-defaults.conf "$SPARK_HOME/conf"
 RUN chmod u+x /opt/spark/sbin/* && \
     chmod u+x /opt/spark/bin/*
 
@@ -50,10 +49,32 @@ ENV PYTHONPATH=$SPARK_HOME/python/:$PYTHONPATH
 
 #### /SPARK
 
+### HMS
+WORKDIR /opt
 
+ENV HADOOP_VERSION=3.2.0
+ENV METASTORE_VERSION=3.0.0
+
+ENV HADOOP_HOME=/opt/hadoop-${HADOOP_VERSION}
+ENV HIVE_HOME=/opt/apache-hive-metastore-${METASTORE_VERSION}-bin
+
+RUN curl -L https://apache.org/dist/hive/hive-standalone-metastore-${METASTORE_VERSION}/hive-standalone-metastore-${METASTORE_VERSION}-bin.tar.gz | tar zxf - && \curl -L https://archive.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz | tar zxf -
+RUN curl -L https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-8.0.19.tar.gz | tar zxf -
+RUN cp mysql-connector-java-8.0.19/mysql-connector-java-8.0.19.jar ${HIVE_HOME}/lib/ 
+RUN rm -rf  mysql-connector-java-8.0.19
+
+COPY conf/metastore-site.xml ${HIVE_HOME}/conf
+
+ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64/
+EXPOSE 9083
+### /HMS
+
+RUN apt-get install -y telnet
+COPY scripts/entrypoint.sh /entrypoint.sh
+RUN chmod a+x /entrypoint.sh
 
 #RUN pip -y install black
-USER oleenger
+#USER oleenger
 #RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim  ~/.local/share/nvim/site/pack/packer/start/packer.nvim
 
 #ADD "https://api.github.com/repos/oleenger/config/commits?per_page=1" latest_commit
@@ -68,3 +89,4 @@ USER oleenger
 
 CMD ["/bin/bash"]
 WORKDIR /home/oleenger
+#ENTRYPOINT ["/bin/bash", "-c", "/entrypoint.sh"]
