@@ -87,6 +87,6 @@ RUN chmod a+x /entrypoint.sh
 #RUN ln ~/.config/tmux/tmux.conf ~/.tmux.conf
 #RUN cp ~/.config/bash/bashrc ~/.bashrc
 
-CMD ["/bin/bash"]
 WORKDIR /home/oleenger
-#ENTRYPOINT ["/bin/bash", "-c", "/entrypoint.sh"]
+#CMD ["/bin/bash"]
+ENTRYPOINT ["/bin/sh", "-c", "/entrypoint.sh"]

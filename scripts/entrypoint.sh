@@ -1,15 +1,15 @@
 #!/bin/bash
 
-start-master.sh -p 7077
-start-worker.sh spark://spark-master:7077
-start-history-server.sh
-
+/opt/spark/sbin/start-master.sh -p 7077
+/opt/spark/sbin/start-worker.sh spark://spark-master:7077
+#start-worker.sh spark://spark-master:7077
+/opt/spark/sbin/start-history-server.sh
 
 ### HMS
 
 export HADOOP_HOME=/opt/hadoop-3.2.0
 export HADOOP_CLASSPATH=${HADOOP_HOME}/share/hadoop/tools/lib/aws-java-sdk-bundle-1.11.375.jar:${HADOOP_HOME}/share/hadoop/tools/lib/hadoop-aws-3.2.0.jar
-export JAVA_HOME=/usr/local/openjdk-8
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
 
 # Make sure mariadb is ready
 MAX_TRIES=8
