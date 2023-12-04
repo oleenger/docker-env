@@ -1,7 +1,7 @@
 <configuration>
     <property>
         <name>metastore.thrift.uris</name>
-        <value>thrift://0.0.0.0:9083</value>
+        <value>thrift://localhost:9083</value>
         <description>Thrift URI for the remote metastore. Used by metastore client to connect to remote metastore.</description>
     </property>
     <property>
@@ -14,7 +14,7 @@
     </property>
     <property>
         <name>metastore.warehouse.dir</name>
-        <value>/spark/warehouse/</value>
+        <value>file:///tmp</value>
     </property>
     <property>
         <name>javax.jdo.option.ConnectionDriverName</name>
@@ -23,7 +23,7 @@
 
     <property>
         <name>javax.jdo.option.ConnectionURL</name>
-        <value>jdbc:mysql://localhost:3306/metastore_db?createDatabaseIfNotExist=true</value>
+        <value>jdbc:mysql://localhost:3306/metastore_db</value>
     </property>
 
     <property>
@@ -33,7 +33,7 @@
 
     <property>
         <name>javax.jdo.option.ConnectionPassword</name>
-        <value>hivepassword</value>
+        <value>password</value>
     </property>
 
 </configuration>

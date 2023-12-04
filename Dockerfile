@@ -3,7 +3,7 @@ FROM ubuntu:devel
 RUN apt-get update && \
     apt-get install -y sudo apt-utils curl git-core gnupg tmux zsh wget gcc g++ \
     locales fonts-powerline gh vim pip python3-dev libc-dev libffi-dev graphviz \
-    graphviz-dev tmuxinator htop python3-pip apt-transport-https
+    graphviz-dev tmuxinator htop python3-pip apt-transport-https telnet mysql-server
 
 RUN locale-gen en_US.UTF-8
 
@@ -69,10 +69,9 @@ ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64/
 EXPOSE 9083
 ### /HMS
 
-RUN apt-get install -y telnet mysql-server
 COPY scripts/entrypoint.sh /entrypoint.sh
 RUN chmod a+x /entrypoint.sh
-COPY scripts/hive.sql  /docker-entrypoint-initdb.d/
+
 
 #RUN pip -y install black
 #RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim  ~/.local/share/nvim/site/pack/packer/start/packer.nvim

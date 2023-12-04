@@ -7,7 +7,13 @@
 
 ### HMS
 
+
 service mysql start
+sleep 5
+
+mysql -uroot -e "CREATE USER 'hive'@'%' IDENTIFIED BY 'password'"
+mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'hive'@'%' WITH GRANT OPTION"
+mysql -uroot -e "CREATE DATABASE metastore_db"
 
 export HADOOP_HOME=/opt/hadoop-3.2.0
 export HADOOP_CLASSPATH=${HADOOP_HOME}/share/hadoop/tools/lib/aws-java-sdk-bundle-1.11.375.jar:${HADOOP_HOME}/share/hadoop/tools/lib/hadoop-aws-3.2.0.jar
