@@ -1,27 +1,11 @@
 version: "2"
 
 services:
-  mariadb:
-    image: mariadb:latest
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: admin
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: admin
-      MYSQL_DATABASE: metastore_db
-    networks:
-      - default-nw
 
   dev-oleenger:
     build: .
+    container_name: dev-oleenger
     image: dev-oleenger:latest
     ports:
       - "9083:9083"
-    depends_on:
-      - mariadb
-    networks:
-      - default-nw
-
-networks:
-  default-nw:
+    tty: true

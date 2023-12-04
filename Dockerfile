@@ -59,9 +59,9 @@ ENV HADOOP_HOME=/opt/hadoop-${HADOOP_VERSION}
 ENV HIVE_HOME=/opt/apache-hive-metastore-${METASTORE_VERSION}-bin
 
 RUN curl -L https://apache.org/dist/hive/hive-standalone-metastore-${METASTORE_VERSION}/hive-standalone-metastore-${METASTORE_VERSION}-bin.tar.gz | tar zxf - && \curl -L https://archive.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz | tar zxf -
-RUN curl -L https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-8.0.19.tar.gz | tar zxf -
-RUN cp mysql-connector-java-8.0.19/mysql-connector-java-8.0.19.jar ${HIVE_HOME}/lib/ 
-RUN rm -rf  mysql-connector-java-8.0.19
+RUN curl -L https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-j-8.2.0.tar.gz | tar zxf -
+RUN cp mysql-connector-j-8.2.0/mysql-connector-j-8.2.0.jar ${HIVE_HOME}/lib/ 
+RUN rm -rf  mysql-connector-j-8.2.0
 
 COPY conf/metastore-site.xml ${HIVE_HOME}/conf
 
@@ -69,12 +69,12 @@ ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64/
 EXPOSE 9083
 ### /HMS
 
-RUN apt-get install -y telnet
+RUN apt-get install -y telnet mysql-server
 COPY scripts/entrypoint.sh /entrypoint.sh
 RUN chmod a+x /entrypoint.sh
+COPY scripts/hive.sql  /docker-entrypoint-initdb.d/
 
 #RUN pip -y install black
-#USER oleenger
 #RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim  ~/.local/share/nvim/site/pack/packer/start/packer.nvim
 
 #ADD "https://api.github.com/repos/oleenger/config/commits?per_page=1" latest_commit
@@ -87,6 +87,9 @@ RUN chmod a+x /entrypoint.sh
 #RUN ln ~/.config/tmux/tmux.conf ~/.tmux.conf
 #RUN cp ~/.config/bash/bashrc ~/.bashrc
 
-WORKDIR /home/oleenger
-#CMD ["/bin/bash"]
+RUN mkdir /opt/spark/logs
+
 ENTRYPOINT ["/bin/sh", "-c", "/entrypoint.sh"]
+
+#USER oleenger
+#WORKDIR /home/oleenger
